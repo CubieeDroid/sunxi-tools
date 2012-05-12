@@ -23,6 +23,8 @@ fexc: script.h script.c \
 	script_bin.h script_bin.c \
 	script_fex.h script_fex.c
 
+pins: pins_a10.c
+
 %: %.c %.h
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(filter %.c,$^) $(LIBS)
 
