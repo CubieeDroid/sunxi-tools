@@ -2,19 +2,21 @@ CC = gcc
 CFLAGS = -g -O2 -Wall -Wextra
 CFLAGS += -std=c99 -D_POSIX_C_SOURCE=200112L
 
-TOOLS = fexc bin2fex fex2bin
+FEXC_MULTI = bin2fex fex2bin
+TOOLS = fexc pins
+ALL = $(TOOLS) $(FEXC_MULTI)
 
 .PHONY: all clean
 
-all: $(TOOLS)
+all: $(ALL)
 
 clean:
-	@rm -vf $(TOOLS)
+	@rm -vf $(ALL)
 
 
 $(TOOLS): Makefile common.h
 
-fex2bin bin2fex: fexc
+$(FEXC_MULTI): fexc
 	ln -s $< $@
 
 fexc: script.h script.c \
@@ -25,6 +27,6 @@ fexc: script.h script.c \
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(filter %.c,$^) $(LIBS)
 
 .gitignore: Makefile
-	@for x in $(TOOLS) '*.o' '*.swp'; do \
+	@for x in $(ALL) '*.o' '*.swp'; do \
 		echo $$x; \
 	done > $@
